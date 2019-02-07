@@ -4,7 +4,7 @@
 ## My Corpus
 I am comparing Spotify's morning (breakfast) and evening (dinner) playlists. What are the characteristics of these playlists? What marks the difference between breakfast and dinner playlists? The playlists that I am comparing, are the three most popular playlists. 
 
-  #### Breakfast:
+  **Breakfast:**
   
     1. Morning Stroll - Get away from the maddening crowds with this peaceful pop mix.
     
@@ -12,7 +12,7 @@ I am comparing Spotify's morning (breakfast) and evening (dinner) playlists. Wha
     
     3. Morning Acoustic - Rise & shine with the perfect blend of folk and acoustic.
   
-  #### Dinner:
+  **Dinner**
   
     1. Dinner with Friends - Having friends over for dinner? Here's the perfect playlist.
     
