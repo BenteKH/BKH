@@ -1,5 +1,5 @@
 # Computational Musicology
-##*Bente Klein Hazebroek* **I** *February 2019*
+## *Bente Klein Hazebroek* **I** *February 2019*
 
 Just normal text
 
