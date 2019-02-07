@@ -13,6 +13,3 @@ I am comparing Spotify's morning (breakfast) and evening (dinner) playlists. Wha
     1. Dinner with Friends
     2. Dinner Music
     3. Feel Good Dinner
-    
-Italics = *jfiej*
-Bold = **jfeijf**
