@@ -23,16 +23,16 @@ This results in a total of 281 Coffeehouse songs and 168 On the Road songs.
 ###### *Track popularity*
 The Coffehouse playlists have a mean track popularity of 52.38 (SD = 25.751), whereas the On the Road playlists have a higher mean track popularity of 61.68 (SD = 29.766). This makes sense, since the On the Road playlists contain more songs that everyone can sing along to, and are thus familiar to a large audience. 
 
-##### *Energy*
+###### *Energy*
 I expect that energy of the On the Road playlists is much higher than for Coffehouse playlists. While on the road, you need to stay awake, so most songs have a loud beat. Coffeehouse songs, on the other hand, sound more quiet and peaceful. Spotify measured that the average energy in On the Road songs is 0.6131 (SD = 0.295) and 0.3596 (SD = 0.262) in Coffehouse songs. Indeed, energy seems to be much higher in On the Road playlists. 
 
-##### *Danceability*
+###### *Danceability*
 Since the energy is higher in On the Road playlists, I thought danceability would be higher as well. There is indeed a difference, but this difference is smaller than I thought it would be: 0.6051 (SD = 0.191) On the Road vs  0.5495 (SD = 0.237) Coffeehouse. Energy  does not seem to play a role in the danceability of songs, so I'm not sure what danceability it based on then.
 
-##### *Acousticness*
+###### *Acousticness*
 Characteristic for mellow Coffeehouse songs is their high acousticness (0.6589, SD = 0.347). The playlists contain mostly easy, soft songs that are accompanied by piano or guitar without much of electronic sounds. The acousticness of these playlists is thus, as expected, much higher than for On the Road playlists (0.2932, SD = 0.353). 
 
-#### *Instrumentalness & Speechiness*
+##### *Instrumentalness & Speechiness*
 The instrumentalness does not really differ for Coffeehouse playlists (0.0319, SD = 0.243) and On the Road playlists (0.0253, SD = 0.322). The standard deviation is also quite high for both kinds of playlists, so I don't think that high/low instrumentalness is a characteristic of either playlist. The same goes for speechiness. 
 
 
