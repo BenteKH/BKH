@@ -32,20 +32,5 @@ Since the energy is higher in On the Road playlists, I thought danceability woul
 ###### *Acousticness*
 Characteristic for mellow Coffeehouse songs is their high acousticness (0.6589, SD = 0.347). The playlists contain mostly easy, soft songs that are accompanied by piano or guitar without much of electronic sounds. The acousticness of these playlists is thus, as expected, much higher than for On the Road playlists (0.2932, SD = 0.353). 
 
-##### *Instrumentalness & Speechiness*
-The instrumentalness does not really differ for Coffeehouse playlists (0.0319, SD = 0.243) and On the Road playlists (0.0253, SD = 0.322). The standard deviation is also quite high for both kinds of playlists, so I don't think that high/low instrumentalness is a characteristic of either playlist. The same goes for speechiness. 
-
-
-
-summary(TOTALCOFFEEHOUSE$speechiness)
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-0.02360 0.03030 0.03440 0.04317 0.04030 0.39000 
-> summary(TOTALCOFFEEHOUSE$speechiness) %>%
-+ sd()
-[1] 0.1453607
-> summary(TOTALONTHEROAD$speechiness) %>%
-mean = 0.06675
-+ sd()
-[1] 0.1710481
-
-  
+##### *Valence*
+I experience the On the Road playlists to be happier than Coffeehouse playlists, since these songs sound more uplifting to me. Spotify has generated a measure for valence: the higher the valence value, the happier the song. According to this measure, On the Road playlists are happier (0.4709, SD = 0.304) than Coffeehouse playlists (0.3555, SD = 0.3165).
