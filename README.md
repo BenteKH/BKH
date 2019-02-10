@@ -2,20 +2,18 @@
 *Bente Klein Hazebroek*  **I**  *February 2019*
 
 ## My Corpus
-I am comparing Spotify's morning (breakfast) and evening (dinner) playlists. What are the characteristics of these playlists? What marks the difference between the two? I am using the following playlists for this research:
+I am looking at Spotify's 'coffeehouse' playlists and  What are the characteristics of these playlists? I am using the following playlists for this research:
 
-  **Breakfast:**
+  **Coffeehouse:**
   
-    1. Morning Stroll - Get away from the maddening crowds with this peaceful pop mix.
-    
-    2. Mellow Morning - Have a quiet morning with this mix of something familiar and something new.
-    
-    3. Morning Acoustic - Rise & shine with the perfect blend of folk and acoustic.
+    1. Coffeehouse - Feel the vibe of the Coffeehouse playlist, full of relaxing singer-songwriter an pop music.    
+    2. 't Koffiehuis - 'n Bakkie en gemoedelijke muziek op de achtergrond.    
+    3. Your Favorite Coffeehouse - Curl up in your favorite spot with some sweet, mellow tunes...
   
-  **Dinner:**
+ **On the Road:**
+ 
+    1. Classic Road Trip Songs - The ultimate playlist to fuel your good mood while on the road.
+    2. Onderweg - Met deze playlist heb je altijd de beste hits bij de hand voor onderweg.
+    3. Songs to Sing in the Car - Sing along and enjoy the drive...
   
-    1. Dinner with Friends - Having friends over for dinner? Here's the perfect playlist.
-    
-    2. Dinner Music - Dinner music that includes well known and new tracks.
-    
-    3. Feel Good Dinner - An uplifting yet tasteful dinner playlist with a guaranteed feel good vibe.
+  
