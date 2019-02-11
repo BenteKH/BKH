@@ -27,7 +27,7 @@ The Coffehouse playlists have a mean track popularity of 52.38 (SD = 25.751), wh
 I expect that energy of the On the Road playlists is much higher than for Coffehouse playlists. While on the road, you need to stay awake, so most songs have a loud beat. Coffeehouse songs, on the other hand, sound more quiet and peaceful. Spotify measured that the average energy in On the Road songs is 0.6131 (SD = 0.295) and 0.3596 (SD = 0.262) in Coffehouse songs. Indeed, energy seems to be much higher in On the Road playlists. 
 
 ###### *Danceability*
-Since the energy is higher in On the Road playlists, I thought danceability would be higher as well. There is indeed a difference, but this difference is smaller than I thought it would be: 0.6051 (SD = 0.191) On the Road vs  0.5495 (SD = 0.237) Coffeehouse. Energy  does not seem to play a role in the danceability of songs, so I'm not sure what danceability it based on then.
+Since the energy is higher in On the Road playlists, I thought danceability would be higher as well. There is indeed a difference, but this difference is smaller than I thought it would be: 0.6051 (SD = 0.191) On the Road vs  0.5495 (SD = 0.237) Coffeehouse. Energy  does not seem to play a role in the danceability of songs, so I'm not sure what danceability is based on then.
 
 ###### *Acousticness*
 Characteristic for mellow Coffeehouse songs is their high acousticness (0.6589, SD = 0.347). The playlists contain mostly easy, soft songs that are accompanied by piano or guitar without much of electronic sounds. The acousticness of these playlists is thus, as expected, much higher than for On the Road playlists (0.2932, SD = 0.353). 
