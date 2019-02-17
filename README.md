@@ -42,5 +42,6 @@ A coffeehouse is a place to quietly drink coffee, so you will not hear loud and 
 
 ## `Week 7 (II)`
 
-![Coffeehouse](Rplotcoffee.png)
-![On the Road](Rplotroad.png)
+As I saw last week, high energy is characteristic for Road Trip songs, whereas high acousticness is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference.
+
+![Coffeehouse](Rplotcoffee.png) ![On the Road](Rplotroad.png)
