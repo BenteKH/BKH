@@ -43,4 +43,3 @@ A coffeehouse is a place to quietly drink coffee, so you will not hear loud and 
 
 ![Coffeehouse] (Rplot Coffehouse.png)
 ![On the Road] (Rplot Ontheroad.png)
-
