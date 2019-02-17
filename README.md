@@ -38,7 +38,5 @@ I experience the On the Road playlists to be happier than Coffeehouse playlists,
 ###### *Tempo and loudness*
 A coffeehouse is a place to quietly drink coffee, so you will not hear loud and fast music there, but On the Road songs are more uplifting (so probably faster and louder). The tempo and loudness of On the Road songs (tempo: 122.07, SD = 40.042; loudness: -7.423, SD = 5.120) are indeed higer than Coffeehouse songs (tempo: 115.25, SD = 52.971; loudness:-10.845, SD = 9.068), but against my expectations, the difference is not really big. This is probably because the tempo and loudness of songs within the playlists differ too much, looking at the high standard deviations.
 
-![Coffeehouse](RplotCoffeehouse.png)
-![On the Road](RplotOnTheroad.png)
-
-Joe
+![Coffeehouse](RPLOTCoffeehouse.png)
+![On the Road](RPLOTOnTheRoad.png)
