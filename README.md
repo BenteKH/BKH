@@ -1,7 +1,9 @@
 # Computational Musicology
 *Bente Klein Hazebroek*  **I**  *11863226*  **I**  *February 2019*
 
-## My Corpus
+## `Week 6 (I)`
+
+### My Corpus
 I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B (whether you're alone or with friends; you go to work or are on a holiday). Since the car is a private place, you might listen to uplifting, sing-along songs. What are the characteristics of these playlists and in what way do they differ? I am using the following playlists for this research, composed by Spotify and Digster Nederland:
 
   **Coffeehouse:**
@@ -18,7 +20,7 @@ I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehou
     
 This results in a total of 281 Coffeehouse songs and 168 On the Road songs.
 
-## Findings
+### Findings
 
 ###### *Track popularity*
 The Coffehouse playlists have a mean track popularity of 52.38 (SD = 25.751), whereas the On the Road playlists have a higher mean track popularity of 61.68 (SD = 29.766). This makes sense, since the On the Road playlists contain more songs that everyone can sing along to, and are thus familiar to a large audience. 
@@ -37,6 +39,8 @@ I experience the On the Road playlists to be happier than Coffeehouse playlists,
 
 ###### *Tempo and loudness*
 A coffeehouse is a place to quietly drink coffee, so you will not hear loud and fast music there, but On the Road songs are more uplifting (so probably faster and louder). The tempo and loudness of On the Road songs (tempo: 122.07, SD = 40.042; loudness: -7.423, SD = 5.120) are indeed higer than Coffeehouse songs (tempo: 115.25, SD = 52.971; loudness:-10.845, SD = 9.068), but against my expectations, the difference is not really big. This is probably because the tempo and loudness of songs within the playlists differ too much, looking at the high standard deviations.
+
+## `Week 7 (II)`
 
 ![Coffeehouse](Rplotcoffee.png)
 ![On the Road](Rplotroad.png)
