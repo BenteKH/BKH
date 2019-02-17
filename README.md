@@ -49,3 +49,5 @@ Coffeehouse:
 
 On the Road:
 ![On the Road](Rplotroad.png)
+
+These figures indeed show mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. 
