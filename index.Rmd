@@ -16,6 +16,7 @@ library(flexdashboard)
 library(plotly)
 library(Cairo)
 library(shiny)
+library(dplyr)
 Sys.setenv(SPOTIFY_CLIENT_ID = '7695c57a82654e18ae7990e714b60c38')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = 'fac65dcc16154cbeb79e71ef5dbd9465')
 load(file="BOTHPLAYLISTS.RData")
@@ -23,7 +24,16 @@ load(file="BOTHPLAYLISTS.RData")
 
 My Corpus {.tabset}
 ================================================================
-I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B (whether you're alone or with friends; you go to work or are on a holiday). Since the car is a private place, you might listen to uplifting, sing-along songs. So, what are the characteristics of these playlists and in what ways do they differ? I am using the following playlists for this research, composed by Spotify and Digster Nederland:
+
+Row {data-width=300}
+----------------------------------------------------------------
+
+### Introduction
+I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B (whether you're alone or with friends; you go to work or are on a holiday). Since the car is a private place, you might listen to uplifting, sing-along songs. So, what are the characteristics of these playlists and in what ways do they differ? 
+
+### Data
+
+I am using the following playlists for this research, composed by Spotify and Digster Nederland:
 
   **Coffeehouse:**
   
@@ -37,7 +47,12 @@ I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehou
     2. Onderweg - Met deze playlist heb je altijd de beste hits bij de hand voor onderweg.
     3. Road Trip - Go on a weekend getaway with your barkada and your favorite hits!
     
+Row {data-width=700}
+---------------------------------------------------------------
+
 This results in a total of 281 Coffeehouse songs and 168 On the Road songs.
+
+hier nog een grafiekje?
 
 Findings {.tabset}
 =================================================================
@@ -78,7 +93,7 @@ A coffeehouse is a place to quietly drink coffee, so you will not hear loud and 
 
 Energy vs acousticness {.tabset}
 ==================================================================
-So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference.
+So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. These figures indeed show mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
 
 ```{r}
 plot_both_acousticenergy <- ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, col=valence)) + geom_point(size=4, alpha=0.6) + geom_smooth(se=FALSE, col = "black", size=1.5) + facet_wrap(~playlist_name)
@@ -88,5 +103,164 @@ plot_both_acousticenergy <- ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, 
 ggplotly(plot_both_acousticenergy)
 ```
 
-These figures indeed show mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence shows that songs with high energy and low acoustiness are happiest. 
+Chromagram {.tabset}
+==================================================================
+I created a chromagram for Walk of Life (Dire Strates), found in an On the Road playlist. This seems to be the song with most energy (0.960) and has low acousticness (0.356). According to Spotify, it is one of the least popular songs (16 in a range from 12-100), although I think everone knows this song. Walk of Life is marked with quite high valence (0.7720) and tempo (172.377).
+
+```{r}
+
+get_tidy_audio_analysis <- function(track_uri, ...) 
+{
+    get_track_audio_analysis(track_uri, ...) %>%
+        list %>% transpose %>% as_tibble %>% 
+        mutate_at(vars(meta, track), . %>% map(as_tibble)) %>% 
+        unnest(meta, track) %>% 
+        select(
+            analyzer_version,
+            duration,
+            contains('fade'),
+            ends_with('confidence'),
+            bars:segments) %>% 
+        mutate_at(
+            vars(bars, beats, tatums, sections), 
+            . %>% map(bind_rows)) %>% 
+        mutate(
+            segments =
+                map(
+                    segments,
+                    . %>% 
+                        transpose %>% as_tibble %>% 
+                        unnest(.preserve = c(pitches, timbre)) %>% 
+                        mutate(
+                            pitches = 
+                                map(
+                                    pitches, 
+                                    . %>% 
+                                        flatten_dbl %>% 
+                                        set_names(
+                                            c( 
+                                                'C', 'C#|Db', 'D', 'D#|Eb', 
+                                                'E', 'F', 'F#|Gb', 'G',
+                                                'G#|Ab', 'A', 'A#|Bb', 'B'))),
+                            timbre = 
+                                map(
+                                    timbre,
+                                    . %>% 
+                                        flatten_dbl %>% 
+                                        set_names(
+                                            c(
+                                                'c1', 'c2', 'c3', 'c4', 
+                                                'c5', 'c6', 'c7', 'c8',
+                                                'c9', 'c10', 'c11', 'c12'))))))
+}
+```
+
+```{r}
+compmus_normalise <- compmus_normalize <- function(v, method = "euclidean")
+{
+    
+    harmonic  <- function(v) v * sum(1 / abs(v))
+    manhattan <- function(v) v / sum(abs(v))
+    euclidean <- function(v) v / sqrt(sum(v^2))
+    chebyshev <- function(v) v / max(abs(v))
+    clr       <- function(v) {lv <- log(v); lv - mean(lv)}
+    
+   
+    METHODS <-
+        list(
+            harmonic  = harmonic,
+            manhattan = manhattan,
+            L1        = manhattan,
+            euclidean = euclidean,
+            L2        = euclidean,
+            chebyshev = chebyshev,
+            maximum   = chebyshev,
+            aitchison = clr,
+            clr       = clr)
+
+     if (!is.na(i <- pmatch(method, names(METHODS))))
+        METHODS[[i]](v)
+    else 
+        stop('The method name is ambiguous or the method is unsupported.')
+}
+
+compmus_long_distance <- function(xdat, ydat, feature, method = "euclidean")
+{
+    
+    feature <- enquo(feature)
+    
+    manhattan <- function(x, y) sum(abs(x - y))
+    euclidean <- function(x, y) sqrt(sum((x - y) ^ 2))
+    chebyshev <- function(x, y) max(abs(x - y))
+    pearson   <- function(x, y) 1 - cor(x, y)
+    cosine    <- function(x, y)
+    {
+        1 - sum(compmus_normalise(x, "euc") * compmus_normalise(y, "euc"))
+    }
+    angular   <- function(x, y) 2 * acos(1 - cosine(x, y)) / pi
+    aitchison <- function(x, y)
+    {
+        euclidean(compmus_normalise(x, "clr"), compmus_normalise(y, "clr"))
+    }
+    
+    METHODS <-
+        list(
+            manhattan   = manhattan,
+            cityblock   = manhattan,
+            taxicab     = manhattan,
+            L1          = manhattan,
+            totvar      = manhattan,
+            euclidean   = euclidean,
+            L2          = euclidean,
+            chebyshev   = chebyshev,
+            maximum     = chebyshev,
+            pearson     = pearson,
+            correlation = pearson,
+            cosine      = cosine,
+            angular     = angular,
+            aitchison   = aitchison)
+      if (!is.na(i <- pmatch(method, names(METHODS))))
+        bind_cols(
+            crossing(
+                xdat %>% select(xstart = start, xduration = duration),
+                ydat %>% select(ystart = start, yduration = duration)),
+            xdat %>% select(x = !!feature) %>% 
+                crossing(ydat %>% select(y = !!feature)) %>% 
+                transmute(d = map2_dbl(x, y, METHODS[[i]])))
+    else 
+        stop('The method name is ambiguous or the method is unsupported.')
+}
+    
+```
+
+```{r}
+compmus_gather_chroma <- function(data)
+{
+    data %>% 
+    mutate(pitches = map(pitches, bind_rows)) %>% unnest(pitches) %>% 
+    gather("pitch_class", "value", C:B) %>% 
+    mutate(pitch_class = fct_shift(factor(pitch_class), 3))
+}
+```
+
+```{r}
+WalkOfLife <- get_tidy_audio_analysis('4xxB8QUtn8rF4Z2yaRICqp') %>% 
+    select(segments) %>% unnest(segments) %>% 
+    select(start, duration, pitches)
+```
+
+```{r}
+WalkOfLife %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'chebyshev')) %>% 
+    compmus_gather_chroma %>% 
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = pitch_class, 
+            fill = value)) + 
+    geom_tile() +
+    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    theme_minimal()
+```
 
