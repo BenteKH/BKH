@@ -1,10 +1,10 @@
 ---
 title: "Computational Musicology"
 author: "Bente Klein Hazebroek"
-date: "25 February 2019"
+date: "February 2019"
 output: 
     flexdashboard::flex_dashboard:
-      orientation: columns
+      orientation: rows
       vertical_layout: fill
       storyboard: true
 ---
@@ -20,11 +20,7 @@ Sys.setenv(SPOTIFY_CLIENT_ID = '7695c57a82654e18ae7990e714b60c38')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = 'fac65dcc16154cbeb79e71ef5dbd9465')
 ```
 
-# Computational Musicology
-*Bente Klein Hazebroek*  **I**  *11863226*  **I**  *February 2019*
-============================================================================================================
-
-### My Corpus
+## My Corpus {.tabset}
 ------------------------------------------------------------------------------------------------------------
 I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B (whether you're alone or with friends; you go to work or are on a holiday). Since the car is a private place, you might listen to uplifting, sing-along songs. What are the characteristics of these playlists and in what way do they differ? I am using the following playlists for this research, composed by Spotify and Digster Nederland:
 
@@ -42,21 +38,41 @@ I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehou
     
 This results in a total of 281 Coffeehouse songs and 168 On the Road songs.
 
-```{r}
+## Findings {.tabset}
+------------------------------------------------------------------------------------------------------------
 
-```
+###### *Track popularity*
+The Coffehouse playlists have a mean track popularity of 52.38 (SD = 25.751), whereas the On the Road playlists have a higher mean track popularity of 61.68 (SD = 29.766). This makes sense, since the On the Road playlists contain more songs that everyone can sing along to, and are thus familiar to a large audience. 
+
+###### *Energy*
+I expect that energy of the On the Road playlists is much higher than for Coffehouse playlists. While on the road, you need to stay awake, so most songs have a loud beat. Coffeehouse songs, on the other hand, sound more quiet and peaceful. Spotify measured that the average energy in On the Road songs is 0.6131 (SD = 0.295) and 0.3596 (SD = 0.262) in Coffehouse songs. Indeed, energy seems to be much higher in On the Road playlists. 
+
+###### *Danceability*
+Since the energy is higher in On the Road playlists, I thought danceability would be higher as well. There is indeed a difference, but this difference is smaller than I thought it would be: 0.6051 (SD = 0.191) On the Road vs  0.5495 (SD = 0.237) Coffeehouse. Energy  does not seem to play a role in the danceability of songs, so I'm not sure what danceability is based on then.
+
+###### *Acousticness*
+Characteristic for mellow Coffeehouse songs is their high acousticness (0.6589, SD = 0.347). The playlists contain mostly easy, soft songs that are accompanied by piano or guitar without much of electronic sounds. The acousticness of these playlists is thus, as expected, much higher than for On the Road playlists (0.2932, SD = 0.353). 
+
+###### *Valence*
+I experience the On the Road playlists to be happier than Coffeehouse playlists, since these songs sound more uplifting to me. Spotify has generated a measure for valence: the higher the valence value, the happier the song. According to this measure, On the Road playlists are happier (0.4709, SD = 0.304) than Coffeehouse playlists (0.3555, SD = 0.3165).
+
+###### *Tempo and loudness*
+A coffeehouse is a place to quietly drink coffee, so you will not hear loud and fast music there, but On the Road songs are more uplifting (so probably faster and louder). The tempo and loudness of On the Road songs (tempo: 122.07, SD = 40.042; loudness: -7.423, SD = 5.120) are indeed higer than Coffeehouse songs (tempo: 115.25, SD = 52.971; loudness:-10.845, SD = 9.068), but against my expectations, the difference is not really big. This is probably because the tempo and loudness of songs within the playlists differ too much, looking at the high standard deviations.
+
+So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference.
+
+## Outliers
+--------------------------------------------------------------------------------------------
+
+Shotgun (George Ezra), Girl on Fire (Alicia Keys) and Say Something (Justin Timberlake) are in one of the Coffeehouse playlists, although I feel like they could have also been Roadtrip songs. They are all quite popular songs with high energy and low acousticness:
 
 
-```{r}
 
-```
+Say Something = popularity: 62, energy: 0.632, acousticness: 0.103
+Fire = 73, 0.706, 0.135
+Shotgun = 86, 0.735, 0.286
 
-## Including Plots
+![Figure 1: scatterplot for energy and acousticness](RplotBOTH.png)
 
-You can also embed plots, for example:
+These figures indeed show mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
