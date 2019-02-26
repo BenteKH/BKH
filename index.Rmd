@@ -104,7 +104,7 @@ plot_both_acousticenergy <- ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, 
 ```
 
 ```{r, echo=FALSE}
-ggplotly(plot_both_acousticenergy)
+ggplotly(plot_both_acousticenergy, height=375)
 ```
 
 Chromagram {.tabset}
@@ -112,3 +112,6 @@ Chromagram {.tabset}
 I created a chromagram for Walk of Life (Dire Strates), found in an On the Road playlist. This seems to be the song with most energy (0.960) and has low acousticness (0.356). According to Spotify, it is one of the least popular songs (16 in a range from 12-100), although I think everone knows this song. Walk of Life is marked with quite high valence (0.7720) and tempo (172.377).
 
 *I tried to create a chromagram, but I kept getting error messages when running the code. I will try again later this week.*
+
+Conclusion {.tabset}
+==================================================================
