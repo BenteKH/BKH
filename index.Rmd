@@ -47,7 +47,7 @@ I am using the following playlists for this research, composed by Spotify and Di
     2. Onderweg - Met deze playlist heb je altijd de beste hits bij de hand voor onderweg.
     3. Road Trip - Go on a weekend getaway with your barkada and your favorite hits!
     
-Row {data-width=700}
+Row
 ---------------------------------------------------------------
 
 This results in a total of 281 Coffeehouse songs and 168 On the Road songs.
