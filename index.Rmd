@@ -102,20 +102,20 @@ Energy vs acousticness {.tabset}
 So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. These figures indeed show mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
 
 ```{r}
-plot_both_acousticenergy <- ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, col=valence)) + geom_point(size=4, alpha=0.6) + geom_smooth(se=FALSE, col = "black", size=1.5) + facet_wrap(~playlist_name)
+plot_both_acousticenergy <-  ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, col=playlist_name)) + geom_point(alpha=0.7, size=4) + scale_color_manual(values = c("lightskyblue3", "steelblue4"))
 ```
 
 ```{r, echo=FALSE}
-ggplotly(plot_both_acousticenergy, height=375)
+ggplotly(plot_both_acousticenergy, height = 375)
 ```
 
 Chromagram {.tabset}
 ==================================================================
 I created a chromagram for Walk of Life (Dire Strates), found in an On the Road playlist, and for Waiting Around (Aisha Badru), found in a Coffeehouse playlist. 
 
-Walk of Life seems to be the song with most energy (0.960) and has low acousticness (0.356). According to Spotify, it is one of the least popular songs (16 in a range from 12-100), although I think everone knows this song. Walk of Life is marked with quite high valence (0.7720) and tempo (172.377).
+Walk of Life is a typical On the Road song: it seems to be the song with most energy (0.960) and has low acousticness (0.356). According to Spotify, it is one of the least popular songs (16 in a range from 12-100), although I think everone knows this song. 
 
-Waiting Around is the song with highest acousticness (0.988).. ........
+On the other hand, Waiting Around is the song with highest acousticness (0.988), and low energy (0.1470). It is thus a good example of a Coffeehouse song. With a populariry value of 23, this song is even more popular than Walk of Life, but I doubt that more people know this song.
 
 ```{r}
 get_tidy_audio_analysis <- function(track_uri, ...) 
