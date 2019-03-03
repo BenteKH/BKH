@@ -18,13 +18,14 @@ library(plotly)
 library(Cairo)
 library(shiny)
 library(dplyr)
+library(knitr)
 Sys.setenv(SPOTIFY_CLIENT_ID = '7695c57a82654e18ae7990e714b60c38')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = 'fac65dcc16154cbeb79e71ef5dbd9465')
 load(file="BOTHPLAYLISTS.RData")
 source('spotify (3).R')
 load("~/CLC jaar 2/Computational Musicology/BKH/TOTALCOFFEEHOUSE.RData")
 load("~/CLC jaar 2/Computational Musicology/BKH/TOTALONTHEROAD.RData")
-devtools::install_github('jaburgoyne/compmus')
+library(compmus)
 ```
 
 My Corpus {.tabset}
@@ -89,7 +90,7 @@ Boxplots
 ----------------------------------------------------------------
 
 ```{r}
-BoxplotTrackPopularity <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = track_popularity, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+BoxplotTrackPopularity <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = track_popularity, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Track Popularity")
 ```
 
 ```{r}
@@ -97,7 +98,7 @@ ggplotly(BoxplotTrackPopularity, echo = FALSE, width = 312.5)
 ```
 
 ```{r}
-BoxplotEnergy <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = energy, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+BoxplotEnergy <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = energy, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Energy")
 ```
 
 ```{r}
@@ -105,7 +106,7 @@ ggplotly(BoxplotEnergy, echo = FALSE, width = 312.5)
 ```
 
 ```{r}
-BoxplotAcousticness <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = acousticness, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+BoxplotAcousticness <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = acousticness, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Acousticness")
 ```
 
 ```{r}
@@ -113,7 +114,7 @@ ggplotly(BoxplotAcousticness, echo = FALSE, width = 312.5)
 ```
 
 ```{r}
-BoxplotValence <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = valence, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+BoxplotValence <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = valence, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Valence")
 ```
 
 ```{r}
@@ -339,6 +340,18 @@ WaitingAround %>%
 
 Self-Similarity Matrix {.tabset}
 ==================================================================
+
+Cepstograms {data-width = 500}
+-----------------------------------------------------------------
+
+![Cepstogram Walk Of Life](Cepstogram WalkOfLife.png) 
+![Cepstogram WaitingAround](Cepstogram WaitingAround.png)
+
+SSMs {data-width = 500}
+------------------------------------------------------------------
+
+![Self-Similarity Matrix Walk Of Life](SSM WalkOfLife.png)
+![Self-Similarity Matrix Waiting Around](SSM WaitingAround.png)
 
 Conclusion {.tabset}
 ==================================================================
