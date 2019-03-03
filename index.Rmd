@@ -338,17 +338,15 @@ WaitingAround %>%
     theme_minimal()
 ```
 
-Self-Similarity Matrix {.tabset}
+Cepstogram {.tabset}
 ==================================================================
 
-Cepstograms {data-width = 500}
------------------------------------------------------------------
 
 ![Cepstogram Walk Of Life](Cepstogram WalkOfLife.png) 
 ![Cepstogram WaitingAround](Cepstogram WaitingAround.png)
 
-SSMs {data-width = 500}
-------------------------------------------------------------------
+Self-Similarity Matrix {.tabset}
+=================================================================
 
 ![Self-Similarity Matrix Walk Of Life](SSM WalkOfLife.png)
 ![Self-Similarity Matrix Waiting Around](SSM WaitingAround.png)
