@@ -21,12 +21,14 @@ library(dplyr)
 Sys.setenv(SPOTIFY_CLIENT_ID = '7695c57a82654e18ae7990e714b60c38')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = 'fac65dcc16154cbeb79e71ef5dbd9465')
 load(file="BOTHPLAYLISTS.RData")
+source('spotify (3).R')
 load("~/CLC jaar 2/Computational Musicology/BKH/TOTALCOFFEEHOUSE.RData")
 load("~/CLC jaar 2/Computational Musicology/BKH/TOTALONTHEROAD.RData")
+devtools::install_github('jaburgoyne/compmus')
 ```
 
 My Corpus {.tabset}
-================================================================
+=================================================================
 
 Row
 ----------------------------------------------------------------
@@ -66,39 +68,60 @@ ggplotly(plot_mode_key, height = 400)
 Findings {.tabset}
 =================================================================
 
-Track popularity
+Text
 -----------------------------------------------------------------
 ### Track popularity
 
 The Coffeehouse playlists have a mean track popularity of 52.38 (SD = 25.751), whereas the On the Road playlists have a higher mean track popularity of 61.68 (SD = 29.766). This makes sense, since the On the Road playlists contain more songs that everyone can sing along to, and are thus familiar to a large audience. 
 
-Energy & danceability
------------------------------------------------------------------
-### Energy & danceability
+### Energy
 I expect that energy of the On the Road playlists is much higher than for Coffehouse playlists. While on the road, you need to stay awake, so most songs have a loud beat. Coffeehouse songs, on the other hand, sound more quiet and peaceful. Spotify measured that the average energy in On the Road songs is 0.6131 (SD = 0.295) and 0.3596 (SD = 0.262) in Coffehouse songs. Indeed, energy seems to be much higher in On the Road playlists. 
 
-Since the energy is higher in On the Road playlists, I thought danceability would be higher as well. There is indeed a difference, but this difference is smaller than I thought it would be: 0.6051 (SD = 0.191) On the Road vs  0.5495 (SD = 0.237) Coffeehouse. Energy  does not seem to play a role in the danceability of songs, so I'm not sure what danceability is based on then.
-
-Acousticness
------------------------------------------------------------------
 ### Acousticness
 
 Characteristic for mellow Coffeehouse songs is their high acousticness (0.6589, SD = 0.347). The playlists contain mostly easy, soft songs that are accompanied by piano or guitar without much of electronic sounds. The acousticness of these playlists is thus, as expected, much higher than for On the Road playlists (0.2932, SD = 0.353). 
 
-Valence
------------------------------------------------------------------
 ### Valence
 
 I experience the On the Road playlists to be happier than Coffeehouse playlists, since these songs sound more uplifting to me. Spotify has generated a measure for valence: the higher the valence value, the happier the song. According to this measure, On the Road playlists are happier (0.4709, SD = 0.304) than Coffeehouse playlists (0.3555, SD = 0.3165).
 
-Tempo and loudness
------------------------------------------------------------------
-### Tempo and loudness
+Boxplots
+----------------------------------------------------------------
 
-A coffeehouse is a place to quietly drink coffee, so you will not hear loud and fast music there, but On the Road songs are more uplifting (so probably faster and louder). The tempo and loudness of On the Road songs (tempo: 122.07, SD = 40.042; loudness: -7.423, SD = 5.120) are indeed higer than Coffeehouse songs (tempo: 115.25, SD = 52.971; loudness:-10.845, SD = 9.068), but against my expectations, the difference is not really big. This is probably because the tempo and loudness of songs within the playlists differ too much, looking at the high standard deviations.
+```{r}
+BoxplotTrackPopularity <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = track_popularity, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+```
+
+```{r}
+ggplotly(BoxplotTrackPopularity, echo = FALSE, width = 312.5)
+```
+
+```{r}
+BoxplotEnergy <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = energy, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+```
+
+```{r}
+ggplotly(BoxplotEnergy, echo = FALSE, width = 312.5)
+```
+
+```{r}
+BoxplotAcousticness <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = acousticness, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+```
+
+```{r}
+ggplotly(BoxplotAcousticness, echo = FALSE, width = 312.5)
+```
+
+```{r}
+BoxplotValence <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = valence, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none")
+```
+
+```{r}
+ggplotly(BoxplotValence, echo = FALSE, width = 312.5)
+```
 
 Energy vs acousticness {.tabset}
-==================================================================
+=================================================================
 So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. These figures indeed show mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
 
 ```{r}
@@ -110,7 +133,7 @@ ggplotly(plot_both_acousticenergy, height = 375)
 ```
 
 Chromagram {.tabset}
-==================================================================
+=================================================================
 I created a chromagram for Walk of Life (Dire Strates), found in an On the Road playlist, and for Waiting Around (Aisha Badru), found in a Coffeehouse playlist. 
 
 Walk of Life is a typical On the Road song: it seems to be the song with most energy (0.960) and has low acousticness (0.356). According to Spotify, it is one of the least popular songs (16 in a range from 12-100), although I think everone knows this song. 
@@ -275,8 +298,8 @@ WalkOfLife <-
     select(start, duration, pitches)
 ```
 
-```{r}
-ChromagramWalkOfLife <- WalkOfLife %>% 
+```{r, echo = FALSE}
+WalkOfLife %>% 
     mutate(pitches = map(pitches, compmus_normalise, 'chebyshev')) %>% 
     compmus_gather_chroma %>% 
     ggplot(
@@ -299,8 +322,8 @@ WaitingAround <-
     select(start, duration, pitches)
 ```
 
-```{r}
-ChromagramWaitingAround <- WaitingAround %>% 
+```{r, echo = FALSE}
+WaitingAround %>% 
     mutate(pitches = map(pitches, compmus_normalise, 'chebyshev')) %>% 
     compmus_gather_chroma %>% 
     ggplot(
@@ -313,6 +336,9 @@ ChromagramWaitingAround <- WaitingAround %>%
     labs(x = 'Time (s)', y = NULL, fill = 'Magnitude') +
     theme_minimal()
 ```
+
+Self-Similarity Matrix {.tabset}
+==================================================================
 
 Conclusion {.tabset}
 ==================================================================
