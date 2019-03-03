@@ -1,7 +1,6 @@
 ---
 title: "Computational Musicology"
 author: "Bente Klein Hazebroek"
-date: "February 2019"
 output: 
     flexdashboard::flex_dashboard:
       storyboard: true
