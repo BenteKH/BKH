@@ -341,14 +341,19 @@ WaitingAround %>%
 Cepstogram {.tabset}
 ==================================================================
 
-
+### Walk of Life
 ![Cepstogram Walk Of Life](Cepstogram WalkOfLife.png) 
+
+### Waiting Around
 ![Cepstogram WaitingAround](Cepstogram WaitingAround.png)
 
 Self-Similarity Matrix {.tabset}
 =================================================================
 
+### Walk of Life
 ![Self-Similarity Matrix Walk Of Life](SSM WalkOfLife.png)
+
+### Waiting Around
 ![Self-Similarity Matrix Waiting Around](SSM WaitingAround.png)
 
 Conclusion {.tabset}
