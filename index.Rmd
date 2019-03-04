@@ -337,7 +337,7 @@ WaitingAround %>%
     theme_minimal()
 ```
 
-Cepstogram {.tabset}
+Cepstrogram {.tabset}
 ==================================================================
 
 ### Walk of Life
