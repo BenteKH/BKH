@@ -1,0 +1,6 @@
+#----- SPOTIFY CREDENTIAL FOR SPOTIFYR -----#
+
+if (Sys.getenv('SPOTIFY_CLIENT_ID') == '')
+  Sys.setenv(SPOTIFY_CLIENT_ID = '7695c57a82654e18ae7990e714b60c38')
+if (Sys.getenv('SPOTIFY_CLIENT_SECRET') == '')
+  Sys.setenv(SPOTIFY_CLIENT_SECRET = 'fac65dcc16154cbeb79e71ef5dbd9465')
