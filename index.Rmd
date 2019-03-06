@@ -122,10 +122,10 @@ ggplotly(BoxplotValence, echo = FALSE, width = 312.5)
 
 Energy vs acousticness {.tabset}
 =================================================================
-So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. These figures indeed show mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
+So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. This figure indeed shows mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
 
 ```{r}
-plot_both_acousticenergy <-  ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, col=playlist_name)) + geom_point(alpha=0.7, size=4) + scale_color_manual(values = c("lightskyblue3", "steelblue4"))
+plot_both_acousticenergy <-  ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, col=playlist_name, size = valence)) + geom_point(alpha=0.7) + scale_color_manual(values = c("lightskyblue3", "steelblue4"))
 ```
 
 ```{r, echo=FALSE}
