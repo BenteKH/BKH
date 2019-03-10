@@ -32,13 +32,19 @@ load("~/CLC jaar 2/Computational Musicology/BKH/TOTALONTHEROAD.RData")
 My Corpus {.tabset}
 =================================================================
 
-Row
+Introduction {.sidebar}
 ----------------------------------------------------------------
 
-### Introduction {data-width=300}
+### Coffee - Road
+
 I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B (whether you're alone or with friends; you go to work or are on a holiday). Since the car is a private place, you might listen to uplifting, sing-along songs. So, what are the characteristics of these playlists and in what ways do they differ? 
 
-### Playlists {data-width=700}
+Three popular Coffeehouse and On the Road playlists were selected, resulting in 281 Coffeehouse and 168 On the Road songs.The distribution of keys and mode can be seen in the plots: the lower part represents minor songs; the top major.
+
+Playlists
+---------------------------------------------------------------
+
+### Playlists
 
 I am using the following playlists for this research, composed by Spotify and Digster Nederland:
 
@@ -53,20 +59,31 @@ I am using the following playlists for this research, composed by Spotify and Di
     1. Classic Road Trip Songs - The ultimate playlist to fuel your good mood while on the road.
     2. Onderweg - Met deze playlist heb je altijd de beste hits bij de hand voor onderweg.
     3. Road Trip - Go on a weekend getaway with your barkada and your favorite hits!
-    
-Row
----------------------------------------------------------------
 
-### Data
-
-This results in a total of 281 Coffeehouse songs and 168 On the Road songs.
+Keys Coffeehouse {data-height = 250}
+----------------------------------------------------------------
 
 ```{r, echo=FALSE}
-plot_mode_key <- ggplot(BOTHPLAYLISTS, aes(x=mode, fill=key)) + geom_bar() + facet_wrap(~playlist_name)
+KeysInCoffee <- ggplot(TOTALCOFFEEHOUSE, aes(x = factor(key), fill = key, col = mode)) + geom_bar(aes(y = (..count..)/sum(..count..))) + scale_y_continuous(labels = scales::percent, limits = c(0, 0.2)) + theme(legend.position = "none") + ggtitle("Distribution of keys in Coffeehouse playlists") + xlab("") + ylab("") + scale_color_brewer("black")
 
-ggplotly(plot_mode_key, height = 400)
+KeysInRoad <- ggplot(TOTALONTHEROAD, aes(x = factor(key), fill = key, col = mode)) + geom_bar(aes(y = (..count..)/sum(..count..))) + scale_y_continuous(labels = scales::percent, limits = c(0, 0.2)) + theme(legend.position = "none") + ggtitle("Distribution of keys in On the Road playlists") + xlab("") + ylab("") + scale_color_brewer("black")
 ```
 
+### Keys Coffeehouse
+
+```{r}
+ggplotly(KeysInCoffee)
+```
+
+Keys On the Road {height = 200}
+----------------------------------------------------------------
+
+### Keys On the Road
+
+```{r}
+ggplotly(KeysInRoad)
+```
+    
 Findings {.tabset}
 =================================================================
 
@@ -124,7 +141,7 @@ ggplotly(BoxplotValence, echo = FALSE, width = 312.5)
 
 Energy vs acousticness {.tabset}
 =================================================================
-So, high *energy* is characteristic for Road Trip songs, whereas high *acousticness* is characteristic for Coffeehouse songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. This figure indeed shows mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
+So, high *acousticness* is characteristic for Coffeehouse songs, whereas high *energy* is characteristic for Road Trip songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. This figure indeed shows mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
 
 ```{r}
 plot_both_acousticenergy <-  ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, col=playlist_name, size = valence)) + geom_point(alpha=0.7) + scale_color_manual(values = c("lightskyblue3", "steelblue4"))
@@ -139,6 +156,29 @@ Chromagram {.tabset}
 
 Row
 -----------------------------------------------------------------
+### Waiting Around
+
+```{r}
+WaitingAround <- 
+    get_tidy_audio_analysis('6WQlGuh6c4jciXEyM2rVGX') %>% 
+    select(segments) %>% unnest(segments) %>% 
+    select(start, duration, pitches)
+```
+
+```{r, echo = FALSE}
+WaitingAround %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'chebyshev')) %>% 
+    compmus_gather_chroma %>% 
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = pitch_class, 
+            fill = value)) + 
+    geom_tile() +
+    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    theme_minimal()
+```
 
 ### Walk of Life
 
@@ -164,51 +204,26 @@ WalkOfLife %>%
     theme_minimal()
 ```
 
-### Waiting Around
-
-```{r}
-WaitingAround <- 
-    get_tidy_audio_analysis('6WQlGuh6c4jciXEyM2rVGX') %>% 
-    select(segments) %>% unnest(segments) %>% 
-    select(start, duration, pitches)
-```
-
-```{r, echo = FALSE}
-WaitingAround %>% 
-    mutate(pitches = map(pitches, compmus_normalise, 'chebyshev')) %>% 
-    compmus_gather_chroma %>% 
-    ggplot(
-        aes(
-            x = start + duration / 2, 
-            width = duration, 
-            y = pitch_class, 
-            fill = value)) + 
-    geom_tile() +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    theme_minimal()
-```
-
 Sidebar {.sidebar}
 -----------------------------------------------------------------
 
 ### Chromagrams
 
-I created a chromagram for Walk of Life (Dire Strates), found in an On the Road playlist, and for Waiting Around (Aisha Badru), found in a Coffeehouse playlist. 
+I created a chromagram for Waiting Around (Aisha Badru), found in a Coffeehouse playlist, and Walk of Life (Dire Strates), found in an On the Road playlist.
 
-Walk of Life is a typical On the Road song: it seems to be the song with most energy (0.960) and has low acousticness (0.356). According to Spotify, it is one of the least popular songs (16 in a range from 12-100), although I think everone knows this song. 
+Waiting Around is the song with highest acousticness (0.988), and low energy (0.1470). It is thus a good example of a Coffeehouse song. According to Spotify's API, it is in F major. F-A-C is indeed found in the chromagram, although it might as well be in C major.
 
-On the other hand, Waiting Around is the song with highest acousticness (0.988), and low energy (0.1470). It is thus a good example of a Coffeehouse song. With a populariry value of 23, this song is even more popular than Walk of Life, but I doubt that more people know this song.
+On the other hand, Walk of Life is a typical On the Road song: it is the song with most energy (0.960) and has low acousticness (0.356). Spotify says it should be in E major, and indeed the chromagram seems to show mostly E and B - this makes sense for E major. However, a wide range of chroma can be seen. 
 
-Cepstrogram {.tabset}
+Cepstrograms {.tabset}
 ==================================================================
 
 Row
 -----------------------------------------------------------------
 
-
 ```{r}
-WalkOfLife2 <- 
-    get_tidy_audio_analysis('4xxB8QUtn8rF4Z2yaRICqp') %>% 
+Firestone <- 
+    get_tidy_audio_analysis('4gek9UL5WceAq1qiZlhmGM') %>% 
     compmus_align(bars, segments) %>% 
     select(bars) %>% unnest(bars) %>% 
     mutate(
@@ -224,8 +239,8 @@ WalkOfLife2 <-
 ```
 
 ```{r}
-WaitingAround2 <- 
-    get_tidy_audio_analysis('6WQlGuh6c4jciXEyM2rVGX') %>% 
+AppMe <- 
+    get_tidy_audio_analysis('012VxxpXwn4quWIN4F8jiQ') %>% 
     compmus_align(bars, segments) %>% 
     select(bars) %>% unnest(bars) %>% 
     mutate(
@@ -240,9 +255,9 @@ WaitingAround2 <-
                 method = 'mean'))
 ```
 
-### Walk of Life
+### Firestone
 ```{r}
-WalkOfLife2 %>% 
+Firestone %>% 
     compmus_gather_timbre %>% 
     ggplot(
         aes(
@@ -256,9 +271,9 @@ WalkOfLife2 %>%
     theme_classic()
 ```
 
-### Waiting Around
+### App Me
 ```{r}
-WaitingAround2 %>% 
+AppMe %>% 
     compmus_gather_timbre %>% 
     ggplot(
         aes(
@@ -277,7 +292,7 @@ Sidebar {.sidebar}
 
 ### Cepstrograms
 
-Text here
+The mean loudness of Coffeehouse songs is -10.845Hz, and -7.4239Hz for On the Road songs. I chose the songs that are closest to these averages to create cepstrograms. This is Firestone - Live Acoustic (Kygo & Conrad Sewell) for Coffeehouse with 10.831Hz and App Me (Lucky Fonz III) for On the Road, with -7.440Hz.
 
 Self-Similarity Matrixes {.tabset}
 =================================================================
@@ -285,9 +300,43 @@ Self-Similarity Matrixes {.tabset}
 Row
 -----------------------------------------------------------------
 
-### Walk of Life
 ```{r}
-WalkOfLife2 %>% 
+LeaveALightOn <- 
+    get_tidy_audio_analysis('2k2CZ1dJClLmDO2TVGsz1R') %>% 
+    compmus_align(bars, segments) %>% 
+    select(bars) %>% unnest(bars) %>% 
+    mutate(
+        pitches = 
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'rms', norm = 'euclidean')) %>% 
+    mutate(
+        timbre = 
+            map(segments, 
+                compmus_summarise, timbre, 
+                method = 'mean'))
+```
+
+```{r}
+PianoMan <- 
+    get_tidy_audio_analysis('70C4NyhjD5OZUMzvWZ3njJ') %>% 
+    compmus_align(bars, segments) %>% 
+    select(bars) %>% unnest(bars) %>% 
+    mutate(
+        pitches = 
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'rms', norm = 'euclidean')) %>% 
+    mutate(
+        timbre = 
+            map(segments, 
+                compmus_summarise, timbre, 
+                method = 'mean'))
+```
+
+### Leave a Light On 
+```{r}
+LeaveALightOn %>% 
     compmus_self_similarity(timbre, 'cosine') %>% 
     ggplot(
         aes(
@@ -303,9 +352,9 @@ WalkOfLife2 %>%
     labs(x = '', y = '')
 ```
 
-### Waiting Around
+### Piano Man
 ```{r}
-WaitingAround2 %>% 
+PianoMan %>% 
     compmus_self_similarity(timbre, 'cosine') %>% 
     ggplot(
         aes(
@@ -326,15 +375,14 @@ Sidebar {.sidebar}
 
 ### Self-Similarity Matrixes
 
-Text here
+I have listened to a few random songs in both playlists, and thought Leave a Light On (Tom Walker) and Piano Man (Billie Joel) would be interesting to see in a Self-Similarity Matrix. Both songs seem to have reapeating patterns throughout the whole song.
 
 
-Week 10 {.tabset}
+Chordograms {.tabset}
 ==================================================================
 
 Row
 -----------------------------------------------------------------
-
 ```{r}
 circshift <- function(v, n) {if (n == 0) v else c(tail(v, n), head(v, -n))}
                                     
@@ -421,8 +469,8 @@ key_templates <-
 ```
 
 ```{r}
-WalkOfLife3 <- 
-    get_tidy_audio_analysis('4xxB8QUtn8rF4Z2yaRICqp') %>% 
+ShineALight <- 
+    get_tidy_audio_analysis('5PmLbCVmKuwNY2xf1QxC3p') %>% 
     compmus_align(sections, segments) %>% 
     select(sections) %>% unnest(sections) %>% 
     mutate(
@@ -434,7 +482,35 @@ WalkOfLife3 <-
 ```
 
 ```{r}
-WalkOfLife3 %>% 
+WithYou <- 
+    get_tidy_audio_analysis('1RbhQxFFJM7QNKALY5JebS') %>% 
+    compmus_align(sections, segments) %>% 
+    select(sections) %>% unnest(sections) %>% 
+    mutate(
+        pitches = 
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'mean', norm = 'manhattan'))
+    
+```
+
+### With You
+
+```{r}
+WithYou %>% 
+    compmus_match_pitch_template(key_templates, 'euclidean', 'manhattan') %>% 
+    ggplot(
+        aes(x = start + duration / 2, width = duration, y = name, fill = d)) +
+    geom_tile() +
+    scale_fill_viridis_c(option = 'E', guide = 'none') +
+    theme_minimal() +
+    labs(x = 'Time (s)', y = '')
+```
+
+### Shine a Light
+
+```{r}
+ShineALight %>% 
     compmus_match_pitch_template(key_templates, 'euclidean', 'manhattan') %>% 
     ggplot(
         aes(x = start + duration / 2, width = duration, y = name, fill = d)) +
@@ -446,10 +522,13 @@ WalkOfLife3 %>%
 
 Sidebar {.sidebar}
 -----------------------------------------------------------------
+### Chordograms
 
-### Info
+For the chordograms, I have chosen songs in the keys that are most used in the playlists (G in Coffeehouse and C in On the Road). 
 
-Text here yay
+With You - A Sweet Little Love Song Demo (Valerie June) is a Coffeehouse song, which is a song in G with an acousticness of 0.965
+
+Shine a Light (Bryan Adams) is a song from an On the Road playlist, which is the song with highest energy (0.858) in C.
 
 Conclusion {.tabset}
 ==================================================================
