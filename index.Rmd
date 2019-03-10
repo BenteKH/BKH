@@ -213,7 +213,7 @@ I created a chromagram for Waiting Around (Aisha Badru), found in a Coffeehouse 
 
 Waiting Around is the song with highest acousticness (0.988), and low energy (0.1470). It is thus a good example of a Coffeehouse song. According to Spotify's API, it is in F major. F-A-C is indeed found in the chromagram, although it might as well be in C major.
 
-On the other hand, Walk of Life is a typical On the Road song: it is the song with most energy (0.960) and has low acousticness (0.356). Spotify says it should be in E major, and indeed the chromagram seems to show mostly E and B - this makes sense for E major. However, a wide range of chroma can be seen. 
+On the other hand, Walk of Life is a typical On the Road song: it is the song with most energy (0.960) and has low acousticness (0.356). Spotify says it should be in E major, and indeed the chromagram seems to show mostly E and B - this makes sense for E major. However, a wide range of pitch classes can be seen. 
 
 Cepstrograms {.tabset}
 ==================================================================
