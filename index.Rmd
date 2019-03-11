@@ -375,7 +375,7 @@ Sidebar {.sidebar}
 
 ### Self-Similarity Matrixes
 
-I have listened to a few random songs in both playlists, and thought Leave a Light On (Tom Walker) and Piano Man (Billie Joel) would be interesting to see in a Self-Similarity Matrix. Both songs seem to have reapeating patterns throughout the whole song.
+I have listened to a few random songs in both playlists, and thought Leave a Light On (Tom Walker) and Piano Man (Billy Joel) would be interesting to see in a Self-Similarity Matrix. Both songs seem to have reapeating patterns throughout the whole song.
 
 
 Chordograms {.tabset}
