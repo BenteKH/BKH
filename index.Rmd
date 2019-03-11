@@ -6,7 +6,7 @@ output:
       storyboard: true
       orientation: rows
       vertical_layout: scroll
-      theme: lumen
+      theme: yeti
 ---
 
 ```{r}
