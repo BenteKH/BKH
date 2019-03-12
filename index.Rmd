@@ -29,7 +29,7 @@ load("~/CLC jaar 2/Computational Musicology/BKH/TOTALCOFFEEHOUSE.RData")
 load("~/CLC jaar 2/Computational Musicology/BKH/TOTALONTHEROAD.RData")
 ```
 
-My Corpus {.tabset}
+Corpus {.tabset}
 =================================================================
 
 Introduction {.sidebar}
@@ -37,9 +37,9 @@ Introduction {.sidebar}
 
 ### Coffee - Road
 
-I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B (whether you're alone or with friends; you go to work or are on a holiday). Since the car is a private place, you might listen to uplifting, sing-along songs. So, what are the characteristics of these playlists and in what ways do they differ? 
+I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B - whether you're alone or with friends; you go to work or are on a holiday. Since the car is a private place, you might listen to familiar, sing-along songs. These settings give a completely different vibe, so my goal is to see what the characteristics of Coffeehouse and On the Road playlists are, and in what ways they differ.
 
-Three popular Coffeehouse and On the Road playlists were selected, resulting in 281 Coffeehouse and 168 On the Road songs.The distribution of keys and mode can be seen in the plots: the lower part represents minor songs; the top major.
+Three popular Coffeehouse and On the Road playlists were selected, resulting in 281 Coffeehouse and 168 On the Road songs.The distribution of keys and mode can be seen in the plots - the lower part represents minor songs; the top major.
 
 Playlists
 ---------------------------------------------------------------
@@ -292,7 +292,7 @@ Sidebar {.sidebar}
 
 ### Cepstrograms
 
-The mean loudness of Coffeehouse songs is -10.845Hz, and -7.4239Hz for On the Road songs. I chose the songs that are closest to these averages to create cepstrograms. This is Firestone - Live Acoustic (Kygo & Conrad Sewell) for Coffeehouse with 10.831Hz and App Me (Lucky Fonz III) for On the Road, with -7.440Hz.
+The mean loudness of Coffeehouse songs is -10.845Hz, and -7.4239Hz for On the Road songs. I chose the songs that are closest to these averages to create cepstrograms. This is Firestone - Live Acoustic (Kygo & Conrad Sewell) for Coffeehouse with -10.831Hz and App Me (Lucky Fonz III) for On the Road, with -7.440Hz.
 
 Self-Similarity Matrixes {.tabset}
 =================================================================
@@ -375,7 +375,7 @@ Sidebar {.sidebar}
 
 ### Self-Similarity Matrixes
 
-I have listened to a few random songs in both playlists, and thought Leave a Light On (Tom Walker) and Piano Man (Billy Joel) would be interesting to see in a Self-Similarity Matrix. Both songs seem to have reapeating patterns throughout the whole song.
+I have listened to a few random songs in both playlists, and thought Leave a Light On - Acoustic (Tom Walker) and Piano Man (Billy Joel) would be interesting to see in a Self-Similarity Matrix. Both songs seem to have repeating patterns throughout the whole song.
 
 
 Chordograms {.tabset}
