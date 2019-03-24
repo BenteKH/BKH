@@ -11,6 +11,7 @@ output:
 
 ```{r}
 library(tidyverse)
+library(tidymodels)
 library(spotifyr)
 library(flexdashboard)
 library(plotly)
@@ -20,13 +21,17 @@ library(plyr)
 library(ggplot2)
 library(dplyr)
 library(knitr)
+library(kknn)
+library(randomForest)
 library(compmus)
+library(ggdendro)
+library(protoclust)
+library(heatmaply)
 Sys.setenv(SPOTIFY_CLIENT_ID = '7695c57a82654e18ae7990e714b60c38')
 Sys.setenv(SPOTIFY_CLIENT_SECRET = 'fac65dcc16154cbeb79e71ef5dbd9465')
-load(file="BOTHPLAYLISTS.RData")
-source('spotify.R')
 load("~/CLC jaar 2/Computational Musicology/BKH/TOTALCOFFEEHOUSE.RData")
 load("~/CLC jaar 2/Computational Musicology/BKH/TOTALONTHEROAD.RData")
+BOTHPLAYLISTS <- rbind(TOTALCOFFEEHOUSE, TOTALONTHEROAD)
 ```
 
 Corpus {.tabset}
@@ -37,9 +42,9 @@ Introduction {.sidebar}
 
 ### Coffee - Road
 
-I am looking at Spotify's 'Coffeehouse' and 'On the Road' playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B - whether you're alone or with friends; you go to work or are on a holiday. Since the car is a private place, you might listen to familiar, sing-along songs. These settings give a completely different vibe, so my goal is to see what the characteristics of Coffeehouse and On the Road playlists are, and in what ways they differ.
+I am looking at Spotify's *'Coffeehouse'* and *'On the Road'* playlists. A coffeehouse is a pleasant place where you can talk, work or read while enjoying a cup of coffee; you will probably listen to easy, mellow songs here. But, when you're on the road, you have to kill time while going from A to B - whether you're alone or with friends; you go to work or are on a holiday. Since the car is a private place, you might listen to familiar, sing-along songs. These settings give a completely different vibe, so my goal is to see whether Coffeehouse and On the Road playlists have characteristic features, and in what ways they differ.
 
-Three popular Coffeehouse and On the Road playlists were selected, resulting in 281 Coffeehouse and 168 On the Road songs.The distribution of keys and mode can be seen in the plots - the lower part represents minor songs; the top major.
+Three popular Coffeehouse and On the Road playlists were selected, resulting in 280 Coffeehouse and 168 On the Road songs. The distribution of keys and mode can be seen in the plots - the lower part represents minor songs; the top major.
 
 Playlists
 ---------------------------------------------------------------
@@ -108,7 +113,7 @@ Boxplots
 ----------------------------------------------------------------
 
 ```{r}
-BoxplotTrackPopularity <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = track_popularity, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Track Popularity")
+BoxplotTrackPopularity <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = track_popularity, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "palevioletred")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Track Popularity")
 ```
 
 ```{r}
@@ -116,7 +121,7 @@ ggplotly(BoxplotTrackPopularity, echo = FALSE, width = 312.5)
 ```
 
 ```{r}
-BoxplotEnergy <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = energy, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Energy")
+BoxplotEnergy <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = energy, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "palevioletred")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Energy")
 ```
 
 ```{r}
@@ -124,7 +129,7 @@ ggplotly(BoxplotEnergy, echo = FALSE, width = 312.5)
 ```
 
 ```{r}
-BoxplotAcousticness <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = acousticness, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Acousticness")
+BoxplotAcousticness <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = acousticness, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "palevioletred")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Acousticness")
 ```
 
 ```{r}
@@ -132,26 +137,29 @@ ggplotly(BoxplotAcousticness, echo = FALSE, width = 312.5)
 ```
 
 ```{r}
-BoxplotValence <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = valence, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "steelblue4")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Valence")
+BoxplotValence <- ggplot(BOTHPLAYLISTS, aes(x = playlist_name, y = valence, fill = playlist_name)) + geom_boxplot() + scale_fill_manual(values = c("lightskyblue3", "palevioletred")) + theme(legend.position = "none", axis.title.x=element_blank(), axis.title.y = element_blank()) + ggtitle("Valence")
 ```
 
 ```{r}
 ggplotly(BoxplotValence, echo = FALSE, width = 312.5)
 ```
 
-Energy vs acousticness {.tabset}
+All-in-one {.tabset}
 =================================================================
-So, high *acousticness* is characteristic for Coffeehouse songs, whereas high *energy* is characteristic for Road Trip songs. I decided to plot energy and acousticness for both playlists, to see a clear difference. This figure indeed shows mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Valence is added to show that songs with high energy and low acoustiness are happiest. 
 
+----------------------------------------------
+So, high *acousticness* is characteristic for Coffeehouse songs, whereas high *energy* is characteristic for Road Trip songs. Valence is higher in Coffeehouse playlists, and track popularity is higher in On the Road playlists. These four values are visualised in one plot to see a clear difference. Most of the Coffeehouse songs are in the left upper corner and On the Road songs are in the right lower corner. This figure indeed shows mostly high acoustiness and low energy in Coffeehouse, and high energy and low acousticness in On the Road. Songs with high energy and low acoustiness are happiest, but track popularity is not really clear. 
+
+-----------------------------------------------
 ```{r}
-plot_both_acousticenergy <-  ggplot(BOTHPLAYLISTS, aes(x=energy, y=acousticness, col=playlist_name, size = valence)) + geom_point(alpha=0.7) + scale_color_manual(values = c("lightskyblue3", "steelblue4"))
+plot_both_acousticenergy <-  ggplot(BOTHPLAYLISTS, aes(x = energy, y = acousticness, col = playlist_name, alpha = track_popularity, size = valence)) + geom_point() + scale_color_manual(values = c("lightskyblue3", "palevioletred"))
 ```
 
 ```{r, echo=FALSE}
 ggplotly(plot_both_acousticenergy, height = 375)
 ```
 
-Chromagram {.tabset}
+Chromagrams {.tabset}
 =================================================================
 
 Row
@@ -378,157 +386,281 @@ Sidebar {.sidebar}
 I have listened to a few random songs in both playlists, and thought Leave a Light On - Acoustic (Tom Walker) and Piano Man (Billy Joel) would be interesting to see in a Self-Similarity Matrix. Both songs seem to have repeating patterns throughout the whole song.
 
 
-Chordograms {.tabset}
+Random Forest classification
 ==================================================================
 
-Row
------------------------------------------------------------------
 ```{r}
-circshift <- function(v, n) {if (n == 0) v else c(tail(v, n), head(v, -n))}
-                                    
-    # C     C#    D     Eb    E     F     F#    G     Ab    A     Bb    B 
-major_chord <- 
-    c(1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    0,    0)
-minor_chord <- 
-    c(1,    0,    0,    1,    0,    0,    0,    1,    0,    0,    0,    0)
-seventh_chord <- 
-    c(1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    1,    0)
+Coffeehouse6 <- 
+    get_playlist_audio_features('kleinhazebroek', '6FOK30Tkpnsuv0fVFGXhai') %>% 
+       add_audio_analysis
 
-major_key <- 
-    c(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88)
-minor_key <-
-    c(6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17)
+Ontheroad6 <- 
+    get_playlist_audio_features('kleinhazebroek', '4UhUpq66QpV5bn9GicW406') %>% 
+       add_audio_analysis
 
-chord_templates <-
-    tribble(
-        ~name  , ~template,
-        'Gb:7'  , circshift(seventh_chord,  6),
-        'Gb:maj', circshift(major_chord,    6),
-        'Bb:min', circshift(minor_chord,   10),
-        'Db:maj', circshift(major_chord,    1),
-        'F:min' , circshift(minor_chord,    5),
-        'Ab:7'  , circshift(seventh_chord,  8),
-        'Ab:maj', circshift(major_chord,    8),
-        'C:min' , circshift(minor_chord,    0),
-        'Eb:7'  , circshift(seventh_chord,  3),
-        'Eb:maj', circshift(major_chord,    3),
-        'G:min' , circshift(minor_chord,    7),
-        'Bb:7'  , circshift(seventh_chord, 10),
-        'Bb:maj', circshift(major_chord,   10),
-        'D:min' , circshift(minor_chord,    2),
-        'F:7'   , circshift(seventh_chord,  5),
-        'F:maj' , circshift(major_chord,    5),
-        'A:min' , circshift(minor_chord,    9),
-        'C:7'   , circshift(seventh_chord,  0),
-        'C:maj' , circshift(major_chord,    0),
-        'E:min' , circshift(minor_chord,    4),
-        'G:7'   , circshift(seventh_chord,  7),
-        'G:maj' , circshift(major_chord,    7),
-        'B:min' , circshift(minor_chord,   11),
-        'D:7'   , circshift(seventh_chord,  2),
-        'D:maj' , circshift(major_chord,    2),
-        'F#:min', circshift(minor_chord,    6),
-        'A:7'   , circshift(seventh_chord,  9),
-        'A:maj' , circshift(major_chord,    9),
-        'C#:min', circshift(minor_chord,    1),
-        'E:7'   , circshift(seventh_chord,  4),
-        'E:maj' , circshift(major_chord,    4),
-        'G#:min', circshift(minor_chord,    8),
-        'B:7'   , circshift(seventh_chord, 11),
-        'B:maj' , circshift(major_chord,   11),
-        'D#:min', circshift(minor_chord,    3),
-)
-
-key_templates <-
-    tribble(
-        ~name    , ~template,
-        'Gb:maj', circshift(major_key,  6),
-        'Bb:min', circshift(minor_key, 10),
-        'Db:maj', circshift(major_key,  1),
-        'F:min' , circshift(minor_key,  5),
-        'Ab:maj', circshift(major_key,  8),
-        'C:min' , circshift(minor_key,  0),
-        'Eb:maj', circshift(major_key,  3),
-        'G:min' , circshift(minor_key,  7),
-        'Bb:maj', circshift(major_key, 10),
-        'D:min' , circshift(minor_key,  2),
-        'F:maj' , circshift(major_key,  5),
-        'A:min' , circshift(minor_key,  9),
-        'C:maj' , circshift(major_key,  0),
-        'E:min' , circshift(minor_key,  4),
-        'G:maj' , circshift(major_key,  7),
-        'B:min' , circshift(minor_key, 11),
-        'D:maj' , circshift(major_key,  2),
-        'F#:min', circshift(minor_key,  6),
-        'A:maj' , circshift(major_key,  9),
-        'C#:min', circshift(minor_key,  1),
-        'E:maj' , circshift(major_key,  4),
-        'G#:min', circshift(minor_key,  8),
-        'B:maj' , circshift(major_key, 11),
-        'D#:min', circshift(minor_key,  3))
+PianoMan2 <- 
+    get_tidy_audio_analysis('70C4NyhjD5OZUMzvWZ3njJ') %>% 
+    select(segments) %>% unnest(segments)
 ```
 
 ```{r}
-ShineALight <- 
-    get_tidy_audio_analysis('5PmLbCVmKuwNY2xf1QxC3p') %>% 
-    compmus_align(sections, segments) %>% 
-    select(sections) %>% unnest(sections) %>% 
+Bothplaylists6 <- 
+    Coffeehouse6 %>% mutate(playlist = "COFFEEHOUSE") %>% 
+    bind_rows(
+        Ontheroad6 %>% mutate(playlist = "ONTHEROAD")) %>% 
+    mutate(playlist = factor(playlist)) %>% 
+    mutate(
+        segments = 
+            map2(segments, key, compmus_c_transpose)) %>% 
     mutate(
         pitches = 
             map(segments, 
                 compmus_summarise, pitches, 
-                method = 'mean', norm = 'manhattan'))
-    
+                method = 'mean', norm = 'manhattan'),
+        timbre =
+            map(
+                segments,
+                compmus_summarise, timbre,
+                method = 'mean')) %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>% 
+    mutate_at(vars(pitches, timbre), map, bind_rows) %>% 
+    unnest(pitches, timbre)
 ```
 
 ```{r}
-WithYou <- 
-    get_tidy_audio_analysis('1RbhQxFFJM7QNKALY5JebS') %>% 
-    compmus_align(sections, segments) %>% 
-    select(sections) %>% unnest(sections) %>% 
-    mutate(
-        pitches = 
-            map(segments, 
-                compmus_summarise, pitches, 
-                method = 'mean', norm = 'manhattan'))
-    
+Bothplaylists_class <- 
+    recipe(playlist ~
+               danceability +
+               energy +
+               loudness +
+               speechiness +
+               acousticness +
+               instrumentalness +
+               liveness +
+               valence +
+               tempo +
+               duration_ms +
+               C + `C#|Db` + D + `D#|Eb` +
+               E + `F` + `F#|Gb` + G +
+               `G#|Ab` + A + `A#|Bb` + B +
+               c01 + c02 + c03 + c04 + c05 + c06 +
+               c07 + c08 + c09 + c10 + c11 + c12,
+           data = Bothplaylists6) %>% 
+    step_center(all_predictors()) %>%
+    step_scale(all_predictors()) %>%
+    # step_range(all_predictors()) %>% 
+    prep(Bothplaylists6) %>% 
+    juice
 ```
 
-### With You
-
 ```{r}
-WithYou %>% 
-    compmus_match_pitch_template(key_templates, 'euclidean', 'manhattan') %>% 
-    ggplot(
-        aes(x = start + duration / 2, width = duration, y = name, fill = d)) +
-    geom_tile() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    theme_minimal() +
-    labs(x = 'Time (s)', y = '')
+Bothplaylists_cv <- Bothplaylists_class %>% vfold_cv(10)
 ```
 
-### Shine a Light
+```{r}
+Bothplaylists_knn <- nearest_neighbor(neighbors = 1) %>% set_engine('kknn')
+predict_knn <- function(split)
+    fit(Bothplaylists_knn, playlist ~ ., data = analysis(split)) %>% 
+    predict(assessment(split), type = 'class') %>%
+    bind_cols(assessment(split))
+```
 
 ```{r}
-ShineALight %>% 
-    compmus_match_pitch_template(key_templates, 'euclidean', 'manhattan') %>% 
-    ggplot(
-        aes(x = start + duration / 2, width = duration, y = name, fill = d)) +
-    geom_tile() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    theme_minimal() +
-    labs(x = 'Time (s)', y = '')
+Bothplaylists_forest <- rand_forest() %>% set_engine('randomForest')
+predict_forest <- function(split)
+    fit(Bothplaylists_forest, playlist ~ ., data = analysis(split)) %>% 
+    predict(assessment(split), type = 'class') %>%
+    bind_cols(assessment(split))
+```
+
+```{r eval = FALSE}
+Bothplaylists_cv %>% 
+    mutate(pred = map(splits, predict_forest)) %>% 
+    unnest(pred) %>% 
+    metric_set(accuracy, kap, j_index)(truth = playlist, estimate = .pred_class)
+```
+
+Figures
+------------------------------------------------
+
+### Features
+```{r}
+Bothplaylists_class %>% 
+    fit(Bothplaylists_forest, playlist ~ ., data = .) %>% 
+    pluck('fit') %>% 
+    randomForest::varImpPlot()
+```
+
+### Classification
+```{r}
+Bothplaylists_cv %>% 
+    mutate(pred = map(splits, predict_forest)) %>% unnest(pred) %>% 
+    conf_mat(truth = playlist, estimate = .pred_class) %>% 
+    autoplot(type = 'heatmap')
 ```
 
 Sidebar {.sidebar}
------------------------------------------------------------------
-### Chordograms
+--------------------------------------------------
 
-For the chordograms, I have chosen songs in the keys that are most used in the playlists (G in Coffeehouse and C in On the Road). 
+### Random Forest
 
-With You - A Sweet Little Love Song Demo (Valerie June) is a Coffeehouse song, which is a song in G with an acousticness of 0.965
+A Random Forest Classification predicts whether random songs are from a Coffeehouse or On the Road playlist, with an accuracy of approximately 80%. The top features energy, acousticness and timbre features c01, c02 and c04 seem to be the most important when making this prediction.
 
-Shine a Light (Bryan Adams) is a song from an On the Road playlist, which is the song with highest energy (0.858) in C.
+This is the corresponding confusion matrix.
+```{r eval = FALSE}
+Bothplaylists_cv %>% 
+    mutate(pred = map(splits, predict_knn)) %>% unnest(pred) %>% 
+    conf_mat(truth = playlist, estimate = .pred_class)
+```
 
-Conclusion {.tabset}
-==================================================================
+Dendrograms {.tabset}
+============================================================
+
+```{r}
+Coffeehouse12 <- 
+    get_playlist_audio_features('kleinhazebroek', '6FOK30Tkpnsuv0fVFGXhai') %>% 
+    add_audio_analysis %>% 
+    mutate(
+        segments = 
+            map2(segments, key, compmus_c_transpose)) %>% 
+    mutate(
+        pitches = 
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'mean', norm = 'manhattan'),
+        timbre =
+            map(
+                segments,
+                compmus_summarise, timbre,
+                method = 'mean')) %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>% 
+    mutate_at(vars(pitches, timbre), map, bind_rows) %>% 
+    unnest(pitches, timbre)
+```
+
+```{r}
+OntheRoad12 <- 
+    get_playlist_audio_features('kleinhazebroek', '4UhUpq66QpV5bn9GicW406') %>% 
+    add_audio_analysis %>% 
+    mutate(
+        segments = 
+            map2(segments, key, compmus_c_transpose)) %>% 
+    mutate(
+        pitches = 
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'mean', norm = 'manhattan'),
+        timbre =
+            map(
+                segments,
+                compmus_summarise, timbre,
+                method = 'mean')) %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>% 
+    mutate_at(vars(pitches, timbre), map, bind_rows) %>% 
+    unnest(pitches, timbre)
+```
+
+```{r}
+Coffeehouse_juice <- 
+    recipe(track_name ~
+               danceability +
+               energy +
+               loudness +
+               speechiness +
+               acousticness +
+               instrumentalness +
+               liveness +
+               valence +
+               tempo +
+               duration_ms +
+               C + `C#|Db` + D + `D#|Eb` +
+               E + `F` + `F#|Gb` + G +
+               `G#|Ab` + A + `A#|Bb` + B +
+               c01 + c02 + c03 + c04 + c05 + c06 +
+               c07 + c08 + c09 + c10 + c11 + c12,
+           data = Coffeehouse12) %>% 
+    step_center(all_predictors()) %>%
+    step_scale(all_predictors()) %>%
+    # step_range(all_predictors()) %>% 
+    prep(Coffeehouse12 %>% mutate(track_name = str_trunc(track_name, 20))) %>% 
+    juice %>% 
+    column_to_rownames('track_name')
+```
+
+```{r}
+Ontheroad_juice <- 
+    recipe(track_name ~
+               danceability +
+               energy +
+               loudness +
+               speechiness +
+               acousticness +
+               instrumentalness +
+               liveness +
+               valence +
+               tempo +
+               duration_ms +
+               C + `C#|Db` + D + `D#|Eb` +
+               E + `F` + `F#|Gb` + G +
+               `G#|Ab` + A + `A#|Bb` + B +
+               c01 + c02 + c03 + c04 + c05 + c06 +
+               c07 + c08 + c09 + c10 + c11 + c12,
+           data = OntheRoad12) %>% 
+    step_center(all_predictors()) %>%
+    step_scale(all_predictors()) %>%
+    # step_range(all_predictors()) %>% 
+    prep(OntheRoad12 %>% mutate(track_name = str_trunc(track_name, 20))) %>% 
+    juice %>% 
+    column_to_rownames('track_name')
+```
+
+```{r}
+Coffeehouse_dist <- dist(Coffeehouse_juice, method = 'euclidean')
+
+Ontheroad_dist <- dist(Ontheroad_juice, method = 'euclidean')
+```
+
+### Coffeehouse
+```{r}
+protoclust(Coffeehouse_dist) %>% dendro_data %>% ggdendrogram
+```
+
+### On the Road
+```{r}
+protoclust(Ontheroad_dist) %>% dendro_data %>% ggdendrogram
+```
+
+Heatmaps {.tabset}
+=====================================================
+
+```{r eval = FALSE}
+kmeans(Coffeehouse_juice, 4)
+
+kmeans(Ontheroad_juice, 4)
+```
+
+### Coffeehouse
+
+```{r}
+grDevices::dev.size("px")
+heatmaply(
+    Coffeehouse_juice,
+    hclustfun = hclust,
+    # hclustfun = protoclust,
+    # Comment out the hclust_method line when using protoclust.
+    hclust_method = 'average',
+    dist_method = 'euclidean')
+```
+
+### On the Road
+
+```{r}
+grDevices::dev.size("px")
+heatmaply(
+    Ontheroad_juice,
+    hclustfun = hclust,
+    # hclustfun = protoclust,
+    # Comment out the hclust_method line when using protoclust.
+    hclust_method = 'average',
+    dist_method = 'euclidean')
+```
