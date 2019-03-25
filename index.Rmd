@@ -506,16 +506,11 @@ Sidebar {.sidebar}
 
 A Random Forest Classification predicts whether random songs are from a Coffeehouse or On the Road playlist, with an accuracy of approximately 80%. The top features energy, acousticness and timbre features c01, c02 and c04 seem to be the most important when making this prediction.
 
-This is the corresponding confusion matrix.
-```{r eval = FALSE}
-Bothplaylists_cv %>% 
-    mutate(pred = map(splits, predict_knn)) %>% unnest(pred) %>% 
-    conf_mat(truth = playlist, estimate = .pred_class)
-```
-
 Dendrograms {.tabset}
 ============================================================
 
+Row 
+-------------------------------------------
 ```{r}
 Coffeehouse12 <- 
     get_playlist_audio_features('kleinhazebroek', '6FOK30Tkpnsuv0fVFGXhai') %>% 
@@ -630,14 +625,24 @@ protoclust(Coffeehouse_dist) %>% dendro_data %>% ggdendrogram
 protoclust(Ontheroad_dist) %>% dendro_data %>% ggdendrogram
 ```
 
+Sidebar {.sidebar}
+------------------------------------------------------
+
+### Dendrograms
+
+I might still change these, since they are really unclear.
+
 Heatmaps {.tabset}
 =====================================================
 
+Row
+--------------------------------------------------
 ```{r eval = FALSE}
 kmeans(Coffeehouse_juice, 4)
 
 kmeans(Ontheroad_juice, 4)
 ```
+
 
 ### Coffeehouse
 
@@ -664,3 +669,9 @@ heatmaply(
     hclust_method = 'average',
     dist_method = 'euclidean')
 ```
+
+Sidebar {.sidebar}
+-------------------------------------------------
+
+### Heatmaps
+
